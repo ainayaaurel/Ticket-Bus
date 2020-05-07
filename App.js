@@ -3,8 +3,9 @@ import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
 import {store, persistor} from './src/Redux/store';
 import MainHome from './src/MainHome';
+import SplashScreen from 'react-native-splash-screen';
 
-export default class App extends Component {
+class App extends Component {
   render() {
     return (
       <Provider store={store}>
@@ -16,18 +17,4 @@ export default class App extends Component {
   }
 }
 
-// const AppNavigator = createSwitchNavigator({
-//   AuthLoading: AuthLoadingScreen,
-//   App: TabNavigator,
-//   Auth: AuthStack,
-// });
-
-// const AppContainer = createAppContainer(AppNavigator);
-
-// function App() {
-//   return (
-
-//         <AppContainer />
-
-//   );
-// }
+export default App;
