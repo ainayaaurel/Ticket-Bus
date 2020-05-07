@@ -23,12 +23,15 @@ class SelectBus extends Component {
     this.changeScreenToHome = () => {
       this.props.navigation.navigate('Home');
     };
-    this.onChangeScreenChooseChair = () => {
-      this.props.navigation.navigate('Back');
-    };
+
     this.changeScreenToPayment = () => {
       // await this.props.schedulesDetails(data);
       this.props.navigation.navigate('Payment Confirmation');
+    };
+    this.changeScreenToReservationDetails = () => {
+      this.props.navigation.navigate('Reservation', {
+        data: this.props.schedules,
+      });
     };
   }
   state = {
@@ -51,7 +54,10 @@ class SelectBus extends Component {
                 color="#000"
                 style={styles.inputIcon}
               />
-              <Text style={styles.input}> 5 Busses Found </Text>
+              <Text style={styles.input}>
+                {' '}
+                {this.props.schedules.length} Busses Found{' '}
+              </Text>
             </View>
           </View>
 
@@ -98,23 +104,21 @@ class SelectBus extends Component {
                         </View>
                       </View>
                       <View style={styles.fixToText}>
-                        <TouchableOpacity
-                          onPress={() =>
-                            this.props.navigation.navigate(
-                              'PaymentConfirmation',
-                              {data: v},
-                            )
-                          }>
-                          <CheckBox
-                            containerStyle={{backgroundColor: '#27ae60'}}
-                            iconType="material"
-                            checkedIcon="exit-to-app"
-                            textStyle={{color: '#fff'}}
-                            checkedColor="#fff"
-                            title="Purchase"
-                            checked={this.changeScreenToPayment}
-                          />
-                        </TouchableOpacity>
+                        <CheckBox
+                          containerStyle={{backgroundColor: '#27ae60'}}
+                          iconType="material"
+                          checkedIcon="exit-to-app"
+                          textStyle={{color: '#fff'}}
+                          checkedColor="#fff"
+                          checked={true}
+                          title="Book Now"
+                          onPress={() => {
+                            this.props.navigation.navigate('Reservation', {
+                              data: v,
+                            });
+                          }}
+                        />
+
                         <Text style={styles.price}>Rp {v.price}</Text>
                       </View>
                     </Card>

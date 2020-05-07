@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, Image, TouchableOpacity} from 'react-native';
+import {View, Text, Image, TouchableOpacity, ToastAndroid} from 'react-native';
 import {Card, ListItem, Button, Icon, Avatar} from 'react-native-elements';
 import ImagePicker from 'react-native-image-picker';
 
@@ -23,7 +23,10 @@ export default class UploadPicture extends Component {
       if (response.error) {
         console.log(error);
       } else if (response.fileSize > 200000) {
-        ToastAndroid.show('Your file so big, please', ToastAndroid.SHORT);
+        ToastAndroid.show(
+          'Your file so big, more than 2mb',
+          ToastAndroid.SHORT,
+        );
       } else {
         console.log(response.fileSize > 200000, 'ASSS');
         this.setState({

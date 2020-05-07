@@ -35,7 +35,7 @@ class Account extends Component {
   }
 
   componentDidMount() {
-    this.props.getMyAccount();
+    // this.props.getMyAccount();
     console.log('ini data akun', this.props.usersdetails);
   }
   render() {
@@ -44,24 +44,29 @@ class Account extends Component {
       <View>
         <View>
           <Card style={{height: 400}}>
-            <TouchableOpacity onPress={this.changeScreenToUploadPhoto}>
-              <Avatar
-                size="large"
-                rounded
-                containerStyle={{alignSelf: 'center'}}
-                source={{
-                  uri:
-                    'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
-                }}
-                showEditButton
-              />
-            </TouchableOpacity>
+            <Avatar
+              size="large"
+              rounded
+              onPress={() => {
+                this.props.navigation.navigate('Update Photo');
+              }}
+              containerStyle={{alignSelf: 'center'}}
+              source={{
+                uri:
+                  'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
+              }}
+              showEditButton
+            />
+
             <View>
               <Text style={{marginTop: 15, paddingLeft: 100}}>
+                {' '}
+                Name :
                 {this.props.profile.usersdetails &&
                   this.props.profile.usersdetails.name}
               </Text>
-              <Text style={{marginTop: 35, paddingLeft: 100}}>
+              <Text style={{marginTop: 10, paddingLeft: 100}}>
+                Balance :
                 {this.props.profile.usersdetails &&
                   this.props.profile.usersdetails.balance}
               </Text>

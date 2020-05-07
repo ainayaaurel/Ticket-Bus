@@ -21,7 +21,6 @@ class TopUp extends Component {
       nominal: this.state.nominal,
     };
     this.props.topup(data);
-    this.props.updateTopUp(this.props.route.params.id);
     this.props.navigation.navigate('PaymentConfirmation');
   };
   render() {

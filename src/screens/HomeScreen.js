@@ -21,7 +21,7 @@ class HomeScreen extends Component {
   constructor(props) {
     super(props);
     this.props.getRoutes();
-    this.props.getMyAccount();
+
     this.changeScreenToBus = async () => {
       await this.props.navigation.navigate('Select Bus', {
         data: {
@@ -55,7 +55,9 @@ class HomeScreen extends Component {
     this.setState({date});
     // console.log(date)
   };
-  componentDidMount() {}
+  componentDidMount() {
+    this.props.getMyAccount();
+  }
   render() {
     console.disableYellowBox = true;
     return (
@@ -63,19 +65,22 @@ class HomeScreen extends Component {
         <Header
           containerStyle={{backgroundColor: '#15B105', marginTop: -30}}
           centerComponent={{
-            text: 'SHUTTLEBUS-ID',
+            text: 'Ticket.Bus',
             fontWeight: 'bold',
             style: {color: '#fff'},
           }}
           leftComponent={<IconBus name="bus" color="#fff" size={30} />}
-          rightComponent={
-            <Icondots name="dots-vertical" color="#fff" size={30} />
-          }
         />
         <View>
           <Card>
-            <Text>Your Balance!</Text>
-            <Text style={{backgroundColor: 'red', width: '50%'}}>
+            <Text>
+              {' '}
+              Hai{' '}
+              {this.props.myprofile.usersdetails &&
+                this.props.myprofile.usersdetails.name}{' '}
+              Your Balance!
+            </Text>
+            <Text style={{width: '50%'}}>
               {' '}
               Balance : Rp{' '}
               {this.props.myprofile.usersdetails &&
@@ -159,7 +164,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgb(255,255,255)',
     borderBottomWidth: 1,
     borderTopWidth: 1,
-    borderBottomWidth: 1,
     borderRightWidth: 1,
     borderLeftWidth: 1,
     shadowOpacity: 0.7,

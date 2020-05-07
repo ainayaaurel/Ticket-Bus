@@ -11,7 +11,7 @@ export const isLogin = (data) => async (dispatch) => {
     );
     // console.log('ini login', login.data.token)
     if (login.data.token) {
-      AsyncStorage.setItem('token_user', login.data.token);
+      await AsyncStorage.setItem('token_user', login.data.token);
       dispatch({
         type: 'IS_LOGIN',
         payload: login.data,

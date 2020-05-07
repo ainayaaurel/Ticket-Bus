@@ -13,8 +13,11 @@ import VerifyCode from '../src/screens/VerifyCode';
 import Payment from '../src/screens/Payment';
 import RegisterScreen from '../src/screens/RegsiterScreen';
 import UploadPicture from '../src/screens/UploadPicture';
+import MyOrder from '../src/screens/MyOrder';
+import History from '../src/screens/History';
 const Stack = createStackNavigator();
 import {connect} from 'react-redux';
+import ReservationDetails from './screens/ReservationDetails';
 
 class MainHome extends Component {
   componentDidMount() {
@@ -55,14 +58,29 @@ class MainHome extends Component {
             options={{headerShown: true}}
           />
           <Stack.Screen
-            name="Back"
+            name="SelectChair"
             component={ChooseChair}
-            options={{headerShown: true}}
+            options={{headerShown: true, headerTitle: 'Select Chair'}}
           />
           <Stack.Screen
             name="Calender"
             component={Calender}
             options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="My Order"
+            component={MyOrder}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="History"
+            component={History}
+            options={{headerShown: true}}
+          />
+          <Stack.Screen
+            name="Reservation"
+            component={ReservationDetails}
+            options={{headerShown: true, headerTitle: 'Reservation Details'}}
           />
           <Stack.Screen
             name="Edit Profile"

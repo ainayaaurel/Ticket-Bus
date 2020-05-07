@@ -8,7 +8,7 @@ import IconLogout from 'react-native-vector-icons/AntDesign';
 import Home from './HomeScreen';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Account from './Account';
-import MyOrder from './History';
+import History from './History';
 import Inbox from './Inbox';
 import Payment from './Payment';
 
@@ -32,10 +32,10 @@ export default class HomeScreen extends Component {
           }}
         />
         <BottomTab.Screen
-          component={MyOrder}
-          name="My Order: "
+          component={History}
+          name="History"
           options={{
-            tabBarLabel: 'My Order',
+            tabBarLabel: 'History',
             tabBarIcon: ({color, size}) => (
               <IconHistory name="clipboard-list" color={color} size={size} />
             ),

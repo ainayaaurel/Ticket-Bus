@@ -1,17 +1,29 @@
 import React, {Component} from 'react';
-import {Card, Button} from 'react-native-elements';
+import {Card, Button, Input} from 'react-native-elements';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import IconBus from 'react-native-vector-icons/MaterialCommunityIcons';
 import IconSort from 'react-native-vector-icons/FontAwesome5';
 import Icon from 'react-native-vector-icons/Ionicons';
 import IconTime from 'react-native-vector-icons/MaterialCommunityIcons';
 import {getMyAccount} from '../Redux/Actions/ActionsProfil';
+import {
+  postReservation,
+  getHistory,
+} from '../Redux/Actions/ActionsReservations';
 import {connect} from 'react-redux';
 import IconTopup from 'react-native-vector-icons/MaterialIcons';
 
 class Payment extends Component {
-  state = {
-    balance: '',
+  onSubmit = () => {
+    this.props.postReservation(
+      this.props.route.params.data.id,
+      this.props.route.params.seat,
+    );
+    this.props.getMyAccount();
+    this.props.getHistory();
+    this.props.navigation.navigate('My Order', {
+      data: this.props.route.params.data,
+    });
   };
 
   onHandleToScreenTopUp = () => {
@@ -19,6 +31,7 @@ class Payment extends Component {
       idUser: this.props.myprofile.usersdetails.users_id,
     });
   };
+
   render() {
     return (
       <View>
@@ -32,7 +45,7 @@ class Payment extends Component {
             buttonStyle={{backgroundColor: '#27ae60', width: '50%'}}
             icon={<IconTopup name="payment" color="#fff" size={20} />}
             title="Top Up"
-            onPress={this.onHandleToScreenTopUp}
+            onPress={this.onHandleScreeReservation}
           />
         </Card>
         <Card>
@@ -76,13 +89,14 @@ class Payment extends Component {
             <TouchableOpacity>
               <Button
                 buttonStyle={{backgroundColor: '#27ae60'}}
-                title="Book Now"
+                title="Purchase"
                 disabled={
                   this.props.route.params.data.balance <
                   this.props.route.params.data.price
                     ? true
                     : null
                 }
+                onPress={this.onSubmit}
               />
             </TouchableOpacity>
             <Text style={styles.price}>
@@ -172,6 +186,11 @@ const styles = StyleSheet.create({
 });
 const mapStateToProps = (state) => ({
   myprofile: state.account,
+  reservation: state.reservation.reservation,
 });
 
-export default connect(mapStateToProps, {getMyAccount})(Payment);
+export default connect(mapStateToProps, {
+  getMyAccount,
+  getHistory,
+  postReservation,
+})(Payment);

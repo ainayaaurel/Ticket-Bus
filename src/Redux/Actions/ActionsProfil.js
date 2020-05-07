@@ -7,8 +7,10 @@ AsyncStorage.getItem('token_user', (error, results) => {
 
 export const getMyAccount = () => async (dispatch) => {
   try {
+    const token = await AsyncStorage.getItem('token_user');
     const res = await axios.get(
       config.APP_BACKEND.concat(`userdetails/myprofile`),
+      {headers: {Authorization: `Bearer ${token}`}},
     );
     console.log('kkkkkkkkkkkk', res.data);
     dispatch({
