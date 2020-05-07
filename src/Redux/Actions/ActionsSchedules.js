@@ -1,9 +1,13 @@
 import config from '../../utils/config';
 import axios from 'axios';
+import AsyncStorage from '@react-native-community/async-storage';
+AsyncStorage.getItem('token_user', (error, results) => {
+  axios.defaults.headers.common['Authorization'] = `Bearer ${results}`;
+});
 
-export const getSchedules = (departure_at) => async (dispatch) => {
+export const getSchedules = (departure_at, date) => async (dispatch) => {
   try {
-    const query = `schedules?search[value]=${departure_at}`;
+    const query = `schedules?&search[value]=${departure_at}&date=${date}&sortBy=busses.price`;
     const res = await axios.get(config.APP_BACKEND.concat(query));
     console.log('ini baru', res);
     if (res.data.data) {

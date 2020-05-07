@@ -16,42 +16,46 @@ const {width: WIDTH} = Dimensions.get('window');
 class SelectBus extends Component {
   constructor(props) {
     super(props);
-    this.props.getSchedules(this.props.route.params.data);
+    this.props.getSchedules(
+      this.props.route.params.data.departure,
+      this.props.route.params.data.date,
+    );
     this.changeScreenToHome = () => {
       this.props.navigation.navigate('Home');
     };
     this.onChangeScreenChooseChair = () => {
       this.props.navigation.navigate('Back');
     };
-    this.changeScreenToPayment = async (data) => {
-      // console.log(this.state.id);
-      await this.props.schedulesDetails(data);
-      // await this.props.navigation.navigate('Payment Confirmation');
+    this.changeScreenToPayment = () => {
+      // await this.props.schedulesDetails(data);
+      this.props.navigation.navigate('Payment Confirmation');
     };
   }
   state = {
     id: 0,
+    date: '',
+    departure: '',
     schedules: null,
   };
-  componentDidMount() {
-    console.log('ini data sche', this.props.schedules);
-  }
+  componentDidMount() {}
   render() {
     console.log(this.props.schedules);
     return (
       <ScrollView>
         <View>
-          {/* <View style={styles.header}>
-            <IconBus name='bus-side' size={50} color='#fff' />
-          </View> */}
-          {/* <View style={styles.headersecond}>
+          <View style={styles.headersecond}>
             <View style={styles.logoContainer}>
-              <IconSort name='sort-amount-down' size={18} color='#000' style={styles.inputIcon} />
-              <Text style={styles.input} > 5 Busses Found </Text>
+              <IconSort
+                name="sort-amount-down"
+                size={18}
+                color="#000"
+                style={styles.inputIcon}
+              />
+              <Text style={styles.input}> 5 Busses Found </Text>
             </View>
-          </View> */}
-          <Text> aloohaaaaa</Text>
-          {/* <View>
+          </View>
+
+          <View>
             {this.props.schedules &&
               this.props.schedules.map((v, i) => {
                 return (
@@ -95,7 +99,12 @@ class SelectBus extends Component {
                       </View>
                       <View style={styles.fixToText}>
                         <TouchableOpacity
-                          onPress={() => this.changeScreenToPayment(v)}>
+                          onPress={() =>
+                            this.props.navigation.navigate(
+                              'PaymentConfirmation',
+                              {data: v},
+                            )
+                          }>
                           <CheckBox
                             containerStyle={{backgroundColor: '#27ae60'}}
                             iconType="material"
@@ -112,7 +121,7 @@ class SelectBus extends Component {
                   </>
                 );
               })}
-          </View> */}
+          </View>
         </View>
       </ScrollView>
     );

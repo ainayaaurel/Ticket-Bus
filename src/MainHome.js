@@ -5,13 +5,14 @@ import Login from '../src/screens/LoginScreen';
 import ForgotPassword from '../src/screens/ForgotPassword';
 import BottomStack from '../src/screens/BottomStack';
 import SelectBus from '../src/screens/SelectBus';
-// import Calender from '../src/screens/Calender';
+import Calender from '../src/screens/Calendar';
 import EditProfile from '../src/screens/EditProfile';
 import ChooseChair from '../src/screens/SelectaChair';
 import TopUp from '../src/screens/TopUp';
 import VerifyCode from '../src/screens/VerifyCode';
 import Payment from '../src/screens/Payment';
 import RegisterScreen from '../src/screens/RegsiterScreen';
+import UploadPicture from '../src/screens/UploadPicture';
 const Stack = createStackNavigator();
 import {connect} from 'react-redux';
 
@@ -58,24 +59,29 @@ class MainHome extends Component {
             component={ChooseChair}
             options={{headerShown: true}}
           />
-          {/* <Stack.Screen
+          <Stack.Screen
             name="Calender"
             component={Calender}
             options={{headerShown: false}}
-          /> */}
+          />
           <Stack.Screen
             name="Edit Profile"
             component={EditProfile}
             options={{headerShown: true}}
           />
           <Stack.Screen
-            name="Top Up"
-            component={TopUp}
+            name="Update Photo"
+            component={UploadPicture}
             options={{headerShown: true}}
           />
           <Stack.Screen
-            name="Payment Confirmation"
+            name="PaymentConfirmation"
             component={Payment}
+            options={{headerShown: true, headerTitle: 'Payment Confirmation'}}
+          />
+          <Stack.Screen
+            name="TopUp"
+            component={TopUp}
             options={{headerShown: true}}
           />
         </Stack.Navigator>

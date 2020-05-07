@@ -8,10 +8,11 @@ import {
 } from 'react-native';
 import IconBus from 'react-native-vector-icons/FontAwesome5';
 import PickerModal from 'react-native-picker-modal-view';
-import {Card, Header} from 'react-native-elements';
+import {Card, Header, PricingCard} from 'react-native-elements';
 import Icondots from 'react-native-vector-icons/MaterialCommunityIcons';
+import {isLogin} from '../Redux/Actions/Auth/AuthLogin';
 import {getRoutes} from '../Redux/Actions/ActionsRoutes';
-
+import {getMyAccount} from '../Redux/Actions/ActionsProfil';
 import {connect} from 'react-redux';
 
 const {width: WIDTH} = Dimensions.get('window');
@@ -20,14 +21,18 @@ class HomeScreen extends Component {
   constructor(props) {
     super(props);
     this.props.getRoutes();
+    this.props.getMyAccount();
     this.changeScreenToBus = async () => {
       await this.props.navigation.navigate('Select Bus', {
-        data: this.state.selectedItems.Value,
+        data: {
+          departure: this.state.selectedItems.Value,
+          date: this.state.date.dateString,
+        },
       });
     };
 
     this.changeScreenToCalendar = () => {
-      this.props.navigation.navigate('Calendar', {
+      this.props.navigation.navigate('Calender', {
         selectdate: (date) => this.updateDate(date),
       });
     };
@@ -50,10 +55,7 @@ class HomeScreen extends Component {
     this.setState({date});
     // console.log(date)
   };
-  componentDidMount() {
-    // console.log('ini data cuy', this.props.routes)
-    // console.log('ini login', this.props.login)
-  }
+  componentDidMount() {}
   render() {
     console.disableYellowBox = true;
     return (
@@ -70,6 +72,18 @@ class HomeScreen extends Component {
             <Icondots name="dots-vertical" color="#fff" size={30} />
           }
         />
+        <View>
+          <Card>
+            <Text>Your Balance!</Text>
+            <Text style={{backgroundColor: 'red', width: '50%'}}>
+              {' '}
+              Balance : Rp{' '}
+              {this.props.myprofile.usersdetails &&
+                this.props.myprofile.usersdetails.balance}
+            </Text>
+          </Card>
+        </View>
+
         <Card>
           <Text style={{marginBottom: 10}}>Departure - Arrival</Text>
           {this.props.routes && (
@@ -102,7 +116,10 @@ class HomeScreen extends Component {
               style={styles.textSearch}
               onPress={() =>
                 this.props.navigation.navigate('Select Bus', {
-                  data: this.state.selectedItems.Value,
+                  data: {
+                    departure: this.state.selectedItems.Value,
+                    date: this.state.date.dateString,
+                  },
                 })
               }>
               SEARCH
@@ -162,9 +179,12 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => ({
   routes: state.routes.routes,
   login: state.login.sudahlogin,
+  myprofile: state.account,
 });
 
-export default connect(mapStateToProps, {getRoutes})(HomeScreen);
+export default connect(mapStateToProps, {getRoutes, getMyAccount, isLogin})(
+  HomeScreen,
+);
 
 {
   /* <View style={styles.header}>

@@ -1,6 +1,7 @@
 const initialState = {
   usersdetails: [],
   isLoading: true,
+  sudahLogin: false,
 };
 
 const myAccountReducer = (state = initialState, action) => {
@@ -12,6 +13,14 @@ const myAccountReducer = (state = initialState, action) => {
         ...state,
         isLoading: false,
         usersdetails: action.payload,
+      };
+    }
+    case 'IS_LOGOUT': {
+      return {
+        ...state,
+        isLoading: false,
+        sudahLogin: false,
+        usersdetails: [],
       };
     }
     default:

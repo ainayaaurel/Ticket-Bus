@@ -1,132 +1,177 @@
 import React, {Component} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Dimensions,
-  TouchableOpacity,
-} from 'react-native';
-import {schedulesDetails} from '../Redux/Actions/ActionsSchedules';
+import {Card, Button} from 'react-native-elements';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import IconBus from 'react-native-vector-icons/MaterialCommunityIcons';
+import IconSort from 'react-native-vector-icons/FontAwesome5';
+import Icon from 'react-native-vector-icons/Ionicons';
+import IconTime from 'react-native-vector-icons/MaterialCommunityIcons';
+import {getMyAccount} from '../Redux/Actions/ActionsProfil';
 import {connect} from 'react-redux';
+import IconTopup from 'react-native-vector-icons/MaterialIcons';
 
-const {width: WIDTH} = Dimensions.get('window');
 class Payment extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  componentDidMount() {
-    console.log('ini sche details', this.props.details);
-  }
-  render() {
-    console.log('HAHA', this.state.data);
-
-    return <></>;
-  }
-}
-
-const localStyle = StyleSheet.create({
-  headerContainer: {
-    backgroundColor: '#15B105',
-    // justifyContent: 'space-around',
-    marginTop: -20,
-    height: 80,
-  },
-  headersecond: {
-    backgroundColor: '#fff',
-    justifyContent: 'center',
-    paddingLeft: 25,
-    height: 500,
-    marginTop: 20,
-  },
-  input: {
-    top: 8,
-    fontSize: 15,
-    fontWeight: 'bold',
-    color: 'grey',
-    marginBottom: 5,
-    paddingLeft: 10,
-  },
-  inputDeparture: {
-    top: 8,
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: 'black',
-    marginBottom: 17,
-  },
-  inputTicket: {
-    top: 8,
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: 'black',
-    marginBottom: 17,
-  },
-  btnSearch: {
-    width: WIDTH - 55,
-    height: 45,
-    backgroundColor: '#42A845',
-    justifyContent: 'center',
-    marginTop: 20,
-  },
-  textSearch: {
-    fontSize: 16,
-    textAlign: 'center',
-    fontWeight: 'bold',
-    color: '#fff',
-  },
-  box1: {
-    // justifyContent: 'center',
-    // alignItems: 'center',
-    // marginBottom: 90,
-  },
-});
-const mapStateToProps = (state) => {
-  return {
-    details: state.schedules.schedulesDetails,
+  state = {
+    balance: '',
   };
-};
 
-export default connect(mapStateToProps)(Payment);
-
-{
-  /* export default class History extends Component {
+  onHandleToScreenTopUp = () => {
+    this.props.navigation.navigate('TopUp', {
+      idUser: this.props.myprofile.usersdetails.users_id,
+    });
+  };
   render() {
     return (
       <View>
-        {/* <Header
-          containerStyle={{ backgroundColor: '#15B105', marginTop: -30 }}
-          centerComponent={{ text: 'MY ORDER', fontWeight: 'bold', style: { color: '#fff' } }}
-          leftComponent={<IconBus name='bus' color='#fff' size={30} />}
-          rightComponent={<Icondots name='dots-vertical' color='#fff' size={30} />}
-        /> */
+        <Card>
+          <Text style={{marginBottom: 5}}>Top Up for Payment</Text>
+          <Text style={{marginBottom: 5}}>
+            Balance : Rp {this.props.myprofile.usersdetails.balance}
+          </Text>
+
+          <Button
+            buttonStyle={{backgroundColor: '#27ae60', width: '50%'}}
+            icon={<IconTopup name="payment" color="#fff" size={20} />}
+            title="Top Up"
+            onPress={this.onHandleToScreenTopUp}
+          />
+        </Card>
+        <Card>
+          <Text style={styles.agentName}>
+            {this.props.route.params.data.name_agents}
+          </Text>
+          <View style={styles.fixToText}>
+            <View>
+              <Icon name="ios-bus" size={26} color={'#d9d9d9'} />
+            </View>
+            <Text style={styles.busName}>
+              {this.props.route.params.data.name}
+            </Text>
+          </View>
+          <View style={styles.fixToText}>
+            <Text style={styles.classBus}>
+              {this.props.route.params.data.class}
+            </Text>
+          </View>
+          <View style={styles.fixToTextSeat}>
+            <View style={styles.seats}>
+              <Icon name="ios-person" size={23} color={'#d9d9d9'} />
+            </View>
+            <Text> {this.props.route.params.data.sheets} seats left</Text>
+          </View>
+          <View style={{marginBottom: 20, marginTop: 20}}>
+            <View style={styles.fixToText}>
+              <Text style={styles.route}>
+                {this.props.route.params.data.departure_at} -{' '}
+                {this.props.route.params.data.arrival_at}{' '}
+              </Text>
+            </View>
+            <View style={styles.fixToTextSeat}>
+              <View style={styles.seats}>
+                <IconTime name="clock-outline" size={23} color={'#d9d9d9'} />
+              </View>
+              <Text>{this.props.route.params.data.time}</Text>
+            </View>
+          </View>
+          <View style={styles.fixToText}>
+            <TouchableOpacity>
+              <Button
+                buttonStyle={{backgroundColor: '#27ae60'}}
+                title="Book Now"
+                disabled={
+                  this.props.route.params.data.balance <
+                  this.props.route.params.data.price
+                    ? true
+                    : null
+                }
+              />
+            </TouchableOpacity>
+            <Text style={styles.price}>
+              Rp {this.props.route.params.data.price}{' '}
+            </Text>
+          </View>
+        </Card>
+      </View>
+    );
+  }
 }
+const styles = StyleSheet.create({
+  header: {
+    backgroundColor: '#15B105',
+    justifyContent: 'center',
+    paddingLeft: 25,
+    height: 50,
+  },
+  price: {
+    marginTop: 10,
+    marginLeft: 40,
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#27ae60',
+  },
+  route: {
+    fontSize: 14,
+  },
+  busName: {
+    marginRight: 1,
+    marginLeft: 10,
+    paddingBottom: 10,
+    fontWeight: 'bold',
+  },
+  seats: {
+    marginLeft: 110,
+    marginRight: 5,
+  },
+  classBus: {
+    marginLeft: 27,
+    marginTop: -9,
+    fontSize: 12,
+    textTransform: 'uppercase',
+    color: '#d9d9d9',
+    borderTopWidth: 1,
+    borderTopColor: '#d9d9d9',
+  },
+  agentName: {
+    marginBottom: 5,
+    fontWeight: 'bold',
+    paddingBottom: 10,
+    borderBottomColor: 'rgba(0,0,0,0.1)',
+    borderBottomWidth: 1,
+  },
+  fixToText: {
+    flexDirection: 'row',
+  },
+  fixToTextSeat: {
+    flexDirection: 'row',
+    marginTop: -35,
+    marginLeft: 90,
+  },
+  headersecond: {
+    backgroundColor: '#DCDCDC',
+    justifyContent: 'center',
+    paddingLeft: 25,
+    height: 40,
+    borderBottomWidth: 0.3,
+  },
+  card: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 40,
+  },
+  logoContainer: {
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  inputIcon: {
+    position: 'absolute',
+    top: 9,
+    right: 30,
+  },
+  input: {
+    top: 8,
+  },
+});
+const mapStateToProps = (state) => ({
+  myprofile: state.account,
+});
 
-//       </View >
-//     )
-//   }
-// }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     position: 'relative',
-//     flex: 1,
-//     // height: 80,
-//     backgroundColor: 'grey'
-//   }
-// }) * /}
-
-{
-  /* <View style={{ flex: 1 }}>
-          <Text>Departure data</Text>
-          <Text>Departure : </Text>
-          <Text>Arrival : </Text>
-          <Text>Tanggal : </Text>
-          <Text>Harga Tiket</Text>
-          <Text>Harga :</Text>
-          <Text>Total :</Text>
-        </View>
-
-        <View style={{ flex: 1, backgroundColor: 'green' }}>
-          <Text>Test</Text>
-        </View> */
-}
+export default connect(mapStateToProps, {getMyAccount})(Payment);

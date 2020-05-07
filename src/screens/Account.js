@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import {Card, Header, Avatar, ListItem} from 'react-native-elements';
+import {Card, Avatar, ListItem} from 'react-native-elements';
 import IconLogout from 'react-native-vector-icons/AntDesign';
 import {isLogout} from '../Redux/Actions/Auth/AuthLogin';
 import {getMyAccount} from '../Redux/Actions/ActionsProfil';
@@ -16,7 +16,9 @@ const list = [
 class Account extends Component {
   constructor(props) {
     super(props);
-    this.props.getMyAccount();
+    this.state = {
+      usersdetails: [],
+    };
 
     this.changeScreenToLogin = () => {
       this.props.navigation.navigate('Login');
@@ -27,9 +29,13 @@ class Account extends Component {
     this.changeScreenTopUp = () => {
       this.props.navigation.navigate('Top Up');
     };
+    this.changeScreenToUploadPhoto = () => {
+      this.props.navigation.navigate('Update Photo');
+    };
   }
 
   componentDidMount() {
+    this.props.getMyAccount();
     console.log('ini data akun', this.props.usersdetails);
   }
   render() {
@@ -37,57 +43,37 @@ class Account extends Component {
     return (
       <View>
         <View>
-          {/* <Header
-            containerStyle={backgroundColor= '#15B105', marginTop= -30}
-            centerComponent={text= 'MY ACCOUNT', style={{ color= '#fff'}}
-            rightComponent={icon= 'menu', color= '#fff'}
-          /> */}
-          {/* <View>
-            {this.props.usersdetails && this.props.usersdetails.map((v, i) => {
-              return (
-                <> */}
-          <Card style={{height: 80}}>
-            <Avatar
-              size="large"
-              rounded
-              source={{
-                uri:
-                  'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
-              }}
-              showEditButton
-            />
-            <Text
-              style={{position: 'absolute', marginTop: 15, paddingLeft: 100}}>
-              Dinda
-            </Text>
-            <Text
-              style={{position: 'absolute', marginTop: 35, paddingLeft: 100}}>
-              Balance : 350000
-            </Text>
-            <TouchableOpacity
-              style={styles.touchedit}
-              onPress={this.changeScreenEditProfile}>
-              <Text style={styles.textEdit}>EDIT PROFILE</Text>
+          <Card style={{height: 400}}>
+            <TouchableOpacity onPress={this.changeScreenToUploadPhoto}>
+              <Avatar
+                size="large"
+                rounded
+                containerStyle={{alignSelf: 'center'}}
+                source={{
+                  uri:
+                    'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
+                }}
+                showEditButton
+              />
             </TouchableOpacity>
-          </Card>
-          {/* </>
-              )
-            })}
-          </View> */}
-          <View>
-            <Card>
-              <TouchableOpacity onPress={this.changeScreenTopUp}>
-                {list.map((item, i) => (
-                  <ListItem
-                    containerStyle={{backgroundColor: '#529B77'}}
-                    key={i}
-                    title={item.title}
-                    leftIcon={{name: item.icon}}
-                    chevron
-                  />
-                ))}
+            <View>
+              <Text style={{marginTop: 15, paddingLeft: 100}}>
+                {this.props.profile.usersdetails &&
+                  this.props.profile.usersdetails.name}
+              </Text>
+              <Text style={{marginTop: 35, paddingLeft: 100}}>
+                {this.props.profile.usersdetails &&
+                  this.props.profile.usersdetails.balance}
+              </Text>
+              <TouchableOpacity
+                style={styles.touchedit}
+                onPress={this.changeScreenEditProfile}>
+                <Text style={styles.textEdit}>EDIT PROFILE</Text>
               </TouchableOpacity>
-            </Card>
+            </View>
+          </Card>
+
+          <View>
             <TouchableOpacity onPress={() => this.props.isLogout({})}>
               <IconLogout
                 name="logout"
@@ -123,7 +109,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => ({
   logout: state.login.sudahLogin,
-  profile: state.account.usersdetails,
+  profile: state.account,
 });
 
 export default connect(mapStateToProps, {isLogout, getMyAccount})(Account);

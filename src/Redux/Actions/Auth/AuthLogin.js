@@ -24,11 +24,11 @@ export const isLogin = (data) => async (dispatch) => {
   }
 };
 
-export const isLogout = () => {
-  AsyncStorage.removeItem('token_user');
-  return {
+export const isLogout = () => async (dispatch) => {
+  await AsyncStorage.removeItem('token_user');
+  dispatch({
     type: 'IS_LOGOUT',
-  };
+  });
 };
 
 export const isRegister = (data) => async (dispatch) => {
