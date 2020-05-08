@@ -1,11 +1,23 @@
 import React, {Component} from 'react';
-import {View, Text, Image, TouchableOpacity, ToastAndroid} from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  ToastAndroid,
+  Platform,
+} from 'react-native';
 import {Card, ListItem, Button, Icon, Avatar} from 'react-native-elements';
 import ImagePicker from 'react-native-image-picker';
+import {updatePicture, getMyAccount} from '../Redux/Actions/ActionsProfil';
+import {connect} from 'react-redux';
+import config from '../utils/config';
 
-export default class UploadPicture extends Component {
+class UploadPicture extends Component {
   state = {
-    picture: '',
+    picture: config.APP_BACKEND.concat(
+      `files/${this.props.profile.usersdetails.picture}`,
+    ),
   };
 
   handleChoosePhoto = () => {
@@ -21,17 +33,17 @@ export default class UploadPicture extends Component {
     ImagePicker.showImagePicker(options, (response) => {
       console.log('responeseeeeeeeeeeee', response);
       if (response.error) {
-        console.log(error);
-      } else if (response.fileSize > 200000) {
+        console.log(response.error);
+      } else if (response.fileSize > 2000000) {
         ToastAndroid.show(
           'Your file so big, more than 2mb',
           ToastAndroid.SHORT,
         );
       } else {
-        console.log(response.fileSize > 200000, 'ASSS');
+        console.log(response.fileSize > 2000000, 'ASSS');
         this.setState({
           upload: true,
-          picture: response,
+          picture: response.uri,
           image: {
             name: response.fileName,
             type: response.type,
@@ -45,10 +57,27 @@ export default class UploadPicture extends Component {
       }
     });
   };
-
-  componentDidMount() {
-    this.props.UploadPicture(this, state.picture);
-  }
+  onSubmitData = (e) => {
+    console.log('jnkjnkjnkjnjnkjn');
+    const data = new FormData();
+    const File = {
+      uri: this.state.image.uri,
+      name: this.state.image.fileName,
+      type: 'image/jpeg',
+      size: this.state.image.fileSize,
+    };
+    data.append('picture', File);
+    this.props.updatePicture(this.state.image);
+    this.props.getMyAccount();
+    // this.setState({
+    //   picture:
+    //     this.props.profile.usersdetails &&
+    //     config.APP_BACKEND.concat(
+    //       `files/${this.props.profile.usersdetails.picture}`,
+    //     ),
+    // });
+    this.props.navigation.navigate('Account');
+  };
 
   render() {
     return (
@@ -61,8 +90,7 @@ export default class UploadPicture extends Component {
                   size="xlarge"
                   rounded
                   source={{
-                    uri:
-                      'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
+                    uri: this.state.picture,
                   }}
                   showEditButton
                 />
@@ -72,7 +100,10 @@ export default class UploadPicture extends Component {
                   rounded
                   source={{
                     uri:
-                      'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
+                      this.props.profile.usersdetails &&
+                      config.APP_BACKEND.concat(
+                        `files/${this.props.profile.usersdetails.picture}`,
+                      ),
                   }}
                   showEditButton
                 />
@@ -87,9 +118,18 @@ export default class UploadPicture extends Component {
               marginBottom: 0,
             }}
             title="SAVE"
+            onPress={this.onSubmitData}
           />
         </Card>
       </View>
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  profile: state.account,
+});
+
+export default connect(mapStateToProps, {updatePicture, getMyAccount})(
+  UploadPicture,
+);

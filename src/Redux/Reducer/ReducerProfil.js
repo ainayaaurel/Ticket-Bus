@@ -2,6 +2,7 @@ const initialState = {
   usersdetails: [],
   isLoading: true,
   sudahLogin: false,
+  singleData: {},
 };
 
 const myAccountReducer = (state = initialState, action) => {
@@ -21,6 +22,12 @@ const myAccountReducer = (state = initialState, action) => {
         isLoading: false,
         sudahLogin: false,
         usersdetails: [],
+      };
+    }
+    case 'UPDATE_PICTURE': {
+      return {
+        ...state,
+        isLoading: false,
       };
     }
     default:

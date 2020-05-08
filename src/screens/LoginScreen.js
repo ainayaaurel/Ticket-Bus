@@ -52,7 +52,7 @@ class Login extends Component {
     return (
       <View style={styles.parent}>
         <View style={styles.logoContainer}>
-          <IconBus name="bus" size={100} color="#000" style={styles.logoicon} />
+          <IconBus name="bus" size={100} color="#fff" style={styles.logoicon} />
           <Text style={styles.logotext}>SHUTTLEBUS-ID</Text>
         </View>
         <View style={styles.inputContainer}>

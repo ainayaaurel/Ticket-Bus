@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import IconTime from 'react-native-vector-icons/MaterialCommunityIcons';
 import {getHistory} from '../Redux/Actions/ActionsReservations';
 import {connect} from 'react-redux';
-import {ScrollView} from 'react-native-gesture-handler';
+import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 
 class History extends Component {
   componentDidMount() {
@@ -17,17 +17,29 @@ class History extends Component {
       <ScrollView>
         <Header
           containerStyle={{backgroundColor: '#15B105', marginTop: -30}}
-          centerComponent={{
-            text: 'History',
-            fontWeight: 'bold',
-            style: {color: '#fff'},
-          }}
+          leftComponent={
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <Icon name="md-paper" size={30} color={'#fff'} />
+              <Text
+                style={{
+                  fontSize: 17,
+                  fontWeight: 'bold',
+                  color: '#fff',
+                  marginLeft: 10,
+                }}>
+                History
+              </Text>
+            </View>
+          }
         />
         <View>
           {this.props.history &&
             this.props.history.map((v, i) => {
               return (
-                <>
+                <TouchableOpacity
+                  onPress={() =>
+                    this.props.navigation.navigate('HistoryDetail', {data: v})
+                  }>
                   <Card
                     key={i}
                     style={{marginTop: 50}}
@@ -77,7 +89,7 @@ class History extends Component {
                       </Text>
                     </View>
                   </Card>
-                </>
+                </TouchableOpacity>
               );
             })}
         </View>

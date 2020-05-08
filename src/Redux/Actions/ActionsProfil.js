@@ -45,7 +45,7 @@ export const updatePicture = (picture) => async (dispatch) => {
     );
     dispatch({
       type: 'UPDATE_PICTURE',
-      // payload: res.data,
+      payload: res.data,
     });
   } catch (error) {
     console.log(error);

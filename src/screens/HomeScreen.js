@@ -14,6 +14,7 @@ import {isLogin} from '../Redux/Actions/Auth/AuthLogin';
 import {getRoutes} from '../Redux/Actions/ActionsRoutes';
 import {getMyAccount} from '../Redux/Actions/ActionsProfil';
 import {connect} from 'react-redux';
+import {convertToRupiah} from '../utils/converter';
 
 const {width: WIDTH} = Dimensions.get('window');
 
@@ -65,27 +66,38 @@ class HomeScreen extends Component {
         <Header
           containerStyle={{backgroundColor: '#15B105', marginTop: -30}}
           centerComponent={{
-            text: 'Ticket.Bus',
+            text: 'Ticket Bus',
             fontWeight: 'bold',
-            style: {color: '#fff'},
+            style: {color: '#fff', fontSize: 20, fontWeight: 'bold'},
           }}
           leftComponent={<IconBus name="bus" color="#fff" size={30} />}
         />
         <View>
           <Card>
-            <Text>
-              {' '}
+            <Text style={{fontSize: 20, marginBottom: 18}}>
               Hai{' '}
               {this.props.myprofile.usersdetails &&
-                this.props.myprofile.usersdetails.name}{' '}
-              Your Balance!
+                this.props.myprofile.usersdetails.name}
+              !
             </Text>
-            <Text style={{width: '50%'}}>
-              {' '}
-              Balance : Rp{' '}
-              {this.props.myprofile.usersdetails &&
-                this.props.myprofile.usersdetails.balance}
-            </Text>
+
+            <View>
+              <View>
+                <Text
+                  style={{
+                    fontSize: 10,
+                    fontWeight: 'bold',
+                    textTransform: 'uppercase',
+                  }}>
+                  Your Balance
+                </Text>
+              </View>
+              <Text style={{fontSize: 19, fontWeight: 'bold'}}>
+                {this.props.myprofile.usersdetails &&
+                  this.props.myprofile.usersdetails.balance &&
+                  convertToRupiah(this.props.myprofile.usersdetails.balance)}
+              </Text>
+            </View>
           </Card>
         </View>
 

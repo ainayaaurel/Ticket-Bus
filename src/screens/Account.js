@@ -5,7 +5,7 @@ import IconLogout from 'react-native-vector-icons/AntDesign';
 import {isLogout} from '../Redux/Actions/Auth/AuthLogin';
 import {getMyAccount} from '../Redux/Actions/ActionsProfil';
 import {connect} from 'react-redux';
-
+import config from '../utils/config';
 const list = [
   {
     title: 'Top-Up',
@@ -53,7 +53,10 @@ class Account extends Component {
               containerStyle={{alignSelf: 'center'}}
               source={{
                 uri:
-                  'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
+                  this.props.profile.usersdetails &&
+                  config.APP_BACKEND.concat(
+                    `files/${this.props.profile.usersdetails.picture}`,
+                  ),
               }}
               showEditButton
             />
